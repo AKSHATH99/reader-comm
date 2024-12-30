@@ -35,7 +35,7 @@ const BooksSchema: Schema<Books> = new mongoose.Schema({
   },
   CurrentVersionPublishDate: {
     type: Date,
-    required: true,
+    // required: true,
   },
   BookCoverImage: {
     type: String,
