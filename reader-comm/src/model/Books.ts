@@ -9,6 +9,7 @@ export interface Books extends Document {
   BookCoverImage: string;
   totalPages: string;
   BookPDFLink: string;
+  category:string,
   Reviews: "";
   Rating: ""; //out of 5
   Links: ""; //links to online webstores
@@ -48,6 +49,10 @@ const BooksSchema: Schema<Books> = new mongoose.Schema({
   BookPDFLink: {
     type: String,
     required: true,
+  },
+  category:{
+    type:String,
+    required:true,
   },
 
   Rating: {
