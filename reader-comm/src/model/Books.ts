@@ -48,7 +48,7 @@ const BooksSchema: Schema<Books> = new mongoose.Schema({
   },
   BookPDFLink: {
     type: String,
-    required: true,
+    // required: true,
   },
   category:{
     type:String,
@@ -101,3 +101,10 @@ const BooksSchema: Schema<Books> = new mongoose.Schema({
     },
   ],
 });
+
+
+const BookModel =
+  (mongoose.models.User as mongoose.Model<Books>) ||
+  mongoose.model<Books>("User", BooksSchema);
+
+  export default BookModel;
