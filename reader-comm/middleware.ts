@@ -1,5 +1,5 @@
-import { corsMiddleware } from "./src/helpers/middlewares/cors.js";
-import { upload } from "./src/helpers/middlewares/multer.js"; // Ensure you are using upload.fields() for multiple files
+import { corsMiddleware } from "./src/helpers/middlewares/cors";
+import upload from "@/helpers/middlewares/multer";
 import { NextRequest, NextResponse } from "next/server";
 import { default as nextConnect } from "next-connect";  
   
