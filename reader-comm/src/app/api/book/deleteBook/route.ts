@@ -22,9 +22,9 @@ export async function POST(request: Request) {
 
     // const deleteBook = await BookModel.dele
   } catch (error) {
-    console.error("Error during sign-in", error);
+    console.error("Error during delete", error);
     return NextResponse.json(
-      { message: "An error occurred during sign-in" },
+      { message: "An error occurred during delete" },
       { status: 500 }
     );
   }
