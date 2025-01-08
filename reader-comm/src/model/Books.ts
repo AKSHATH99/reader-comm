@@ -9,10 +9,15 @@ export interface Books extends Document {
   BookCoverImage: string;
   totalPages: string;
   BookPDFLink: string;
-  category:string,
-  Reviews: "";
-  Rating: ""; //out of 5
-  Links: ""; //links to online webstores
+  category: string;
+  Reviews: [
+    userId: number,
+    reviewText: string,
+    rating: number,
+    createdAt: Date
+  ];
+  Rating: [average: number, noOFReviews: number, totalRating: number];
+  Links: [storeName: string, url: string]; 
 }
 
 const BooksSchema: Schema<Books> = new mongoose.Schema({
@@ -50,9 +55,9 @@ const BooksSchema: Schema<Books> = new mongoose.Schema({
     type: String,
     // required: true,
   },
-  category:{
-    type:String,
-    required:true,
+  category: {
+    type: String,
+    required: true,
   },
 
   Rating: {
@@ -61,10 +66,14 @@ const BooksSchema: Schema<Books> = new mongoose.Schema({
       required: true,
       default: 0,
     },
-    count: {
+    noOFReviews: {
       type: Number,
       required: true,
       default: 0,
+    },
+    totalRating: {
+      type: Number,
+      required: true,
     },
   },
   Links: [
@@ -102,9 +111,8 @@ const BooksSchema: Schema<Books> = new mongoose.Schema({
   ],
 });
 
-
 const BookModel =
   (mongoose.models.User as mongoose.Model<Books>) ||
   mongoose.model<Books>("User", BooksSchema);
 
-  export default BookModel;
+export default BookModel;

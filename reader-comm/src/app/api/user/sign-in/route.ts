@@ -1,7 +1,5 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
-import ApiError from "@/types/ApiError";
-import ApiResponse from "@/types/ApiResponse";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
