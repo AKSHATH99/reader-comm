@@ -113,7 +113,7 @@ const BooksSchema: Schema<Books> = new mongoose.Schema({
 });
 
 const BookModel =
-  (mongoose.models.User as mongoose.Model<Books>) ||
+  (mongoose.models.Book as mongoose.Model<Books>) ||
   mongoose.model<Books>("Book", BooksSchema);
 
 export default BookModel;

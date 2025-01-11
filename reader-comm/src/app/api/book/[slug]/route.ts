@@ -1,24 +1,26 @@
 import dbConnect from "@/lib/dbConnect";
 import BookModel from "@/model/Books";
 import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 
-export async function GET(request : Request){
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { slug: string } }
+) {
     await dbConnect();
 
     try {
-        const { BookID } = await request.json();
-        if (!BookID) {
+      const { slug } = await params;
+      const BookID = slug;
+        if (!slug) {
           return NextResponse.json({ message: "bookid not found" }, { status: 404 });
         }
 
-        const bookDetails = await BookModel.findById(BookID);
-        if(!bookDetails){
-            return NextResponse.json(
-                { message: "Couldnt fetch book details" },
-                { status: 404 }
-              );
-        }
+        const bookDetails = await BookModel.findById(slug);
+          
+        return NextResponse.json(bookDetails, { status: 200 });
+        
 
     
     } catch (error) {
