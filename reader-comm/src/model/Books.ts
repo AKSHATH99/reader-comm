@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface Books extends Document {
-  BookID: string;
+  // BookID: string;
   BookName: string;
   AuthorName: string;
   PublishedDate: Date;
@@ -16,16 +16,16 @@ export interface Books extends Document {
     rating: number,
     createdAt: Date
   ];
-  Rating: [average: number, noOFReviews: number, totalRating: number];
+  Rating: [average: number, noOFReviews?: number, totalRating?: number];
   Links: [storeName: string, url: string]; 
 }
 
 const BooksSchema: Schema<Books> = new mongoose.Schema({
-  BookID: {
-    type: String,
-    required: true,
-    unique: true,
-  },
+  // BookID: {
+  //   type: String,
+  //   required: true,
+  //   unique: true,
+  // },
   BookName: {
     type: String,
     required: true,
@@ -73,7 +73,8 @@ const BooksSchema: Schema<Books> = new mongoose.Schema({
     },
     totalRating: {
       type: Number,
-      required: true,
+      // required: true,
+      // default:0,
     },
   },
   Links: [
@@ -113,6 +114,6 @@ const BooksSchema: Schema<Books> = new mongoose.Schema({
 
 const BookModel =
   (mongoose.models.User as mongoose.Model<Books>) ||
-  mongoose.model<Books>("User", BooksSchema);
+  mongoose.model<Books>("Book", BooksSchema);
 
 export default BookModel;

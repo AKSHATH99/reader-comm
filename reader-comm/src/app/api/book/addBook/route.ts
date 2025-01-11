@@ -1,40 +1,42 @@
 import dbConnect from "@/lib/dbConnect";
-import UserModel from "@/model/User";
 import BookModel from "@/model/Books";
-import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 import { uploadOnCloudinary } from "@/lib/Cloudinary";
-import nextConnect from "next-connect";
+import { NextRequest } from "next/server";
 
-const handler = nextConnect();
-
-handler.post('/addbook', async (req:any, res:any) => {
+export async function POST(req: NextRequest) {
   await dbConnect();
 
   try {
-    const {
-      BookName,
-      AuthorName,
-      PublishDate,
-      CurrentVersionPublishDate,
-      BookCoverImage,
-      totalPages,
-      category,
-      adminPassword,
-    } = await req.json();
 
-    //admin validation , only admin can use this
-    const adminAuthenicationPassword = process.env.ADMIN_PASS;
+    // Get FormData from the request
+    const formData = await req.formData();
+    
+    // Extract files
+    const bookCoverImage = formData.get('BookCoverImage') as File;
+    const bookPdf = formData.get('bookPdf') as File;
+    
+    // Extract other form fields
+    const BookName = formData.get('BookName') as string;
+    const AuthorName = formData.get('AuthorName') as string;
+    const PublishDate = formData.get('PublishDate') as string;
+    const CurrentVersionPublishDate = formData.get('CurrentVersionPublishDate') as string;
+    const totalPages = formData.get('totalPages') as string;
+    const category = formData.get('category') as string;
+    const adminPassword = formData.get('adminPassword') as string;
 
-    if (adminPassword != adminAuthenicationPassword) {
+    console.log("Book Name:", BookName);
+
+    // Admin validation
+    const adminAuthenicationPassword = "myAdmin";
+    if (adminPassword !== adminAuthenicationPassword) {
       return NextResponse.json(
-        { message: "Not authorised to do this " },
+        { message: "Not authorized to do this" },
         { status: 500 }
       );
     }
 
-
-
+    // Check if book already exists
     const exisitingBook = await BookModel.findOne({
       BookName,
       AuthorName,
@@ -42,33 +44,51 @@ handler.post('/addbook', async (req:any, res:any) => {
 
     if (exisitingBook) {
       return NextResponse.json(
-        { message: "Book already exist " },
+        { message: "Book already exists" },
         { status: 400 }
       );
     }
 
-    //-------------------------- UPLOADING TO CLOUDINARY-------------
+    // Check if files are present
+    if (!bookCoverImage || !bookPdf) {
+      return NextResponse.json(
+        { message: "Files missing" },
+        { status: 400 }
+      );
+    }
 
-    const { bookcoverimage, bookpdf } = req.files;
-    const bookCoverResult:any = await uploadOnCloudinary(bookcoverimage[0].buffer, bookcoverimage[0].originalname);
-    const bookPdfResult:any = await uploadOnCloudinary(bookpdf[0].buffer, bookpdf[0].originalname);
-    console.log("Book Cover Image uploaded to Cloudinary:", bookCoverResult.url);
-    console.log("Book PDF uploaded to Cloudinary:", bookPdfResult.url);
+     // Upload book cover image
+  const bookCoverBuffer = await bookCoverImage.arrayBuffer();
+  const bookCoverResult: any = await uploadOnCloudinary(
+    bookCoverBuffer, 
+    bookCoverImage.name
+  );
 
+  // Upload PDF
+  const bookPdfBuffer = await bookPdf.arrayBuffer();
+  const bookPdfResult: any = await uploadOnCloudinary(
+    bookPdfBuffer, 
+    bookPdf.name
+  );
 
-  if (!bookCoverResult.url && !bookPdfResult.url) {
+  console.log("Book Cover Image URL:", bookCoverResult.url);
+  console.log("Book PDF URL:", bookPdfResult.url);
+
+  if (!bookCoverResult.url || !bookPdfResult.url) {
     return NextResponse.json(
-      { message: "Photo upoad failed " },
-      { status: 200 }
+      { message: "File upload failed" },
+      { status: 500 }
     );
   }
 
+    // Create the book entry
     const newBook = new BookModel({
       BookName,
       AuthorName,
-      PublishDate,
+      PublishedDate:PublishDate,
       CurrentVersionPublishDate,
-      BookCoverImage,
+      BookCoverImage: bookCoverResult.url,
+      BookPDFLink:bookPdfResult.url,
       totalPages,
       category,
     });
@@ -77,15 +97,16 @@ handler.post('/addbook', async (req:any, res:any) => {
 
     if (createdBook) {
       return NextResponse.json(
-        { message: "Book has bee successfully uplaoded" },
+        { message: "Book has been successfully uploaded" },
         { status: 200 }
       );
     }
+
   } catch (error) {
-    console.log(error, "Error while adding book details");
+    console.error("Error while adding book details:", error);
     return NextResponse.json(
       { message: "Error while adding book details" },
       { status: 500 }
     );
   }
-})
+}
