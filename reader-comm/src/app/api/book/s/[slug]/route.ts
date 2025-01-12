@@ -18,7 +18,15 @@ export async function GET(
           return NextResponse.json({ message: "Bookname not found in request" }, { status: 404 });
         }
 
-        const bookDetails = await BookModel.find({BookName:slug});
+        const regex = new RegExp(`^${slug}`, "i");
+        const bookDetails = await BookModel.find({ BookName: { $regex: regex } }).select(
+          " BookName AuthorName PublishedDate BookCoverImage totalPages category Rating"
+        );
+
+        if(bookDetails.length==0 ){
+        return NextResponse.json("Books not found", { status: 200 });
+
+        }
           
         return NextResponse.json(bookDetails, { status: 200 });
         
