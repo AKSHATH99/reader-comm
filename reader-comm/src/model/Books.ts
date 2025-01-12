@@ -16,7 +16,7 @@ export interface Books extends Document {
     rating: number,
     createdAt: Date
   }[];
-  Rating: {average: number, noOFReviews?: number, totalRating?: number}[];
+  Rating: {average: number, noOFReviews?: number, totalRating?: number};
   Links: {storeName: string, url: string}[]; 
 }
 
@@ -74,7 +74,7 @@ const BooksSchema: Schema<Books> = new mongoose.Schema({
     totalRating: {
       type: Number,
       // required: true,
-      // default:0,
+      default:0,
     },
   },
   Links: [
