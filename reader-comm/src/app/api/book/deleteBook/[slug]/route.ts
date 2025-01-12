@@ -2,11 +2,12 @@ import dbConnect from "@/lib/dbConnect";
 import BookModel from "@/model/Books";
 import { NextResponse } from "next/server";
 
-export async function POST(request: Request) {
+export async function POST(request: Request,{params}:{params: {slug:string}}) {
   await dbConnect();
 
   try {
-    const { BookID } = await request.json();
+    const {slug} = await params
+    const BookID  = slug 
     if (!BookID) {
       return NextResponse.json({ message: "bookid not found" }, { status: 404 });
     }

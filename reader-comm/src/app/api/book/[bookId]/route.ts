@@ -6,18 +6,17 @@ import { NextRequest } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: { bookId: string } }
 ) {
     await dbConnect();
 
     try {
-      const { slug } = await params;
-      const BookID = slug;
-        if (!slug) {
+      const { bookId } = await params;
+        if (!bookId) {
           return NextResponse.json({ message: "bookid not found" }, { status: 404 });
         }
 
-        const bookDetails = await BookModel.findById(slug);
+        const bookDetails = await BookModel.findById(bookId);
           
         return NextResponse.json(bookDetails, { status: 200 });
         
