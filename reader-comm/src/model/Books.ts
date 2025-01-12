@@ -10,14 +10,14 @@ export interface Books extends Document {
   totalPages: string;
   BookPDFLink: string;
   category: string;
-  Reviews: [
+  Reviews: {
     userId: number,
     reviewText: string,
     rating: number,
     createdAt: Date
-  ];
-  Rating: [average: number, noOFReviews?: number, totalRating?: number];
-  Links: [storeName: string, url: string]; 
+  }[];
+  Rating: {average: number, noOFReviews?: number, totalRating?: number}[];
+  Links: {storeName: string, url: string}[]; 
 }
 
 const BooksSchema: Schema<Books> = new mongoose.Schema({
