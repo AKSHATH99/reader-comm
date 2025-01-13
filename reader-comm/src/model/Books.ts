@@ -10,12 +10,6 @@ export interface Books extends Document {
   totalPages: string;
   BookPDFLink: string;
   category: string;
-  Reviews: {
-    userId: number,
-    reviewText: string,
-    rating: number,
-    createdAt: Date
-  }[];
   Rating: {average: number, noOFReviews?: number, totalRating?: number};
   Links: {storeName: string, url: string}[]; 
 }
@@ -89,27 +83,27 @@ const BooksSchema: Schema<Books> = new mongoose.Schema({
       },
     },
   ],
-  Reviews: [
-    {
-      userId: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-      },
-      reviewText: {
-        type: String,
-        required: true,
-      },
-      rating: {
-        type: Number,
-        required: true,
-      },
-      createdAt: {
-        type: Date,
-        default: Date.now,
-      },
-    },
-  ],
+  // Reviews: [
+  //   {
+  //     userId: {
+  //       type: Schema.Types.ObjectId,
+  //       ref: "User",
+  //       required: true,
+  //     },
+  //     reviewText: {
+  //       type: String,
+  //       required: true,
+  //     },
+  //     rating: {
+  //       type: Number,
+  //       required: true,
+  //     },
+  //     createdAt: {
+  //       type: Date,
+  //       default: Date.now,
+  //     },
+  //   },
+  // ], 
 });
 
 const BookModel =
