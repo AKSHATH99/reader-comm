@@ -2,6 +2,8 @@ import dbConnect from "@/lib/dbConnect";
 import BookModel from "@/model/Books";
 import { NextResponse } from "next/server";
 import { NextApiRequest } from "next";
+import ReviewModel from "@/model/Reviews";
+import { ratingCalculator } from "@/helpers/ratingCalc";
 
  export async function POST(req: Request ,  {params} : {params : {slug:string}}) {
   await dbConnect();
@@ -10,40 +12,51 @@ import { NextApiRequest } from "next";
     const {userID} = await req.json();
     const {slug} = await params;
 
-    const book = await BookModel.findById(slug)
-
-  // book?.Reviews.map((r)=>{
-  //   console.log(r.userId.toString())
-  // })
-    console.log(userID);
-    console.log(slug);
-    
-    const review = book?.Reviews.find(r => r.userId.toString() == userID);
-    // console.log(review);
-    
-    if (!review) {
+    if(!userID || !slug ){
       return NextResponse.json(
-        { message: "Review not found" },
+        { message: "Please add required data" },
         { status: 404 }
       );
     }
 
-    const subtractRating = review.rating;
+    const book = await BookModel.findById(slug);
+    if(!book){
+      return NextResponse.json(
+        { message: "No book found" },
+        { status: 404 }
+      );
+    } 
+
+    const review = await ReviewModel.findOne({bookId:slug , userId:userID});
+    const ratingToBeSubtracted:any = review?.rating;
+
+    const deleteReview = await ReviewModel.findOneAndDelete({bookId:slug , userId:userID});
+    console.log(deleteReview);
+
+    // Update new rating in the book db
+    const currentTotalRating:any = book.Rating.totalRating;
+    const currentNoOFReviews :any = book.Rating.noOFReviews;
     
-    const deleteReview = await BookModel.updateOne(
-      { _id: slug },
-      {
-        $pull: {
-          Reviews: {
-            userId: userID
-          }
-        },
-        $inc: {
-          'Rating.noOFReviews': -1,
-          'Rating.totalRating': -subtractRating
-        }
-      }
-    );
+    const newAverage = (currentTotalRating- ratingToBeSubtracted) /(currentNoOFReviews-1)
+    
+
+
+    const updateBookRating  = await BookModel.findByIdAndUpdate(
+      {_id:slug},
+      {$inc:{
+        "Rating.average":newAverage,
+        "Rating.noOFReviews": -1,
+       " rating.totalRating ": -currentTotalRating,
+      }}
+    )
+
+    if(!updateBookRating){
+      return NextResponse.json(
+        { message: "Review deletion error" },
+        { status: 500 }
+      );
+    }
+   
 
     return NextResponse.json(
       { message: "Review deleted successfully" },
