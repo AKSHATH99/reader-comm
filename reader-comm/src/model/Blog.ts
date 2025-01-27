@@ -50,11 +50,6 @@ const BlogSchema: Schema<Blogs> = new mongoose.Schema({
       required: true,
       default: 0,
     },
-    noOFReviews: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
   },
 });
 
