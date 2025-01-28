@@ -13,16 +13,16 @@ export async function GET( req: Request,
     const url = new URL(req.url);
     const {slug} = await params;
 
-    const UserReviews = await ReviewModel.find({userId: slug})
+    const UserBookReviews = await ReviewModel.find({userId: slug,contentType:"book"})
+    const UserBlogReviews = await ReviewModel.find({userId: slug,contentType:"blog"})
 
 
    
-    if (UserReviews) {
       return NextResponse.json(
-        { message: "fetched user reviews ",UserReviews },
+        { message: "fetched user reviews ",UserBookReviews,UserBlogReviews },
         { status: 200 }
       );
-    }
+    
   } catch (error) {
     console.log(error, "Error while fetching user comment");
     return NextResponse.json(
