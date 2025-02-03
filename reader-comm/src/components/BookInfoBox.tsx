@@ -11,7 +11,7 @@ const BookInfoBox = ({book}:any) => {
   
 
   return (
-    <div onClick={()=>{router.push("/book/surrounded-by-psychopaths")}} className="w-72 p-5 pb-2 hover:cursor-pointer rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border- bg-[hsl(48,29%,97%)]">
+    <div onClick={()=>{router.push(`/book/${book.title}`)}} className="w-72 p-5 pb-2 hover:cursor-pointer rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border- bg-[hsl(48,29%,97%)]">
       <div className="overflow-hidden rounded-lg mb-4">
         <img
           src={book.cover_image}

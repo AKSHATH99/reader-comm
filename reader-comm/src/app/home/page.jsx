@@ -64,7 +64,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <HeaderComponent/>
+      {/* <HeaderComponent/> */}
       <div className='mt-10 p-3'>
 
       Browse from our varities of books and find your flavour 
