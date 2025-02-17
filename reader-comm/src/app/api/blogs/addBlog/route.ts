@@ -63,6 +63,7 @@ export async function POST(req: NextRequest) {
     const newBlog = new BlogModel({
       BlogTitle,
       AuthorName,
+      AuthorID:userId,
       PublishedDate: PublishDate,
       CoverImage: blogCoverUploaded.url,
       content:BlogContent,

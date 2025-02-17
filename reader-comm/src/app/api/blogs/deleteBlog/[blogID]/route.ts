@@ -8,18 +8,20 @@ export async function POST(request: Request,{params}:{params: {blogID:string}}) 
   try {
     const {blogID} = await params
     // const BookID  = slug 
+    console.log(blogID);
+    
     if (!blogID) {
       return NextResponse.json({ message: "bookid not found" }, { status: 404 });
     }
 
-    const deletedBlog = await BlogModel.findByIdAndDelete({ blogID });
+    const deletedBlog = await BlogModel.findByIdAndDelete( blogID );
 
-    if (deletedBlog == null) {
+   
       return NextResponse.json(
-        { message: "Some error occured while deleting blog" },
+        { message: "Deleted Successfully" },
         { status: 404 }
       );
-    }
+    
 
     // const deleteBook = await BookModel.dele
   } catch (error) {
