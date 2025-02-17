@@ -4,19 +4,23 @@ import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 
 
-export async function GET(
+export async function POST(
   request: NextRequest,
-  { params }: { params: { blogID: string } }
+  { params }: { params: { blogID: string } } // Correct destructuring
 ) {
     await dbConnect();
 
     try {
       const { blogID } = await params;
+      console.log(blogID);
+      
         if (!blogID) {
           return NextResponse.json({ message: "Blog id not found" }, { status: 404 });
         }
 
         const blog = await BlogModel.findById(blogID);
+        console.log((blog));
+        
 
         let currentLikeCount :any = blog?.Rating?.noOfLikes;
         const newLikeCount = currentLikeCount+1
