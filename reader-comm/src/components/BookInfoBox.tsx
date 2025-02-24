@@ -5,33 +5,33 @@ import { useRouter } from "next/navigation";
 import Image from "next/image"
 
 const BookInfoBox = ({book}:any) => {
-  console.log(typeof book.rating);
+  console.log("NEW>>>>>>>>",book);
   
   const router = useRouter()
   
 
   return (
-    <div onClick={()=>{router.push(`/book/${book.title}`)}} className="w-72 p-5 pb-2 hover:cursor-pointer rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border- bg-[hsl(48,29%,97%)]">
+    <div onClick={()=>{router.push(`/book/${book._id}`)}} className="w-72 p-5 pb-2 hover:cursor-pointer rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border- bg-[hsl(48,29%,97%)]">
       <div className="overflow-hidden rounded-lg mb-4">
         <img
-          src={book.cover_image}
+          src={book.BookCoverImage}
           alt="Book Cover"
           className="h-64 w-full object-cover hover:scale-105 transition-transform duration-300"
         />
       </div>
       
       <h2 className="font-serif text-lg font-medium text-gray-800 mb-4 line-clamp-2">
-        {book.title}
+        {book.BookName}
       </h2>
 
       <div className='flex gap-5 items-center -mt-4'>
-      <h2 className='text-gray-600 text-sm ' > {book.author}</h2> 
-      <span className='text-xs text-[#6b6370] mt-1 ' >{book.published_year}</span>
+      <h2 className='text-gray-600 text-sm ' > {book.AuthorName}</h2> 
+      <span className='text-xs text-[#6b6370] mt-1 ' >{book.PublishedDate}</span>
       </div>
 
       <div className='flex gap-5 items-center '>
       <div className='flex gap-2 my-5'>
-      {Array.from({ length: book.rating }, (_, index) => (  
+      {Array.from({ length: book.Rating }, (_, index) => (  
     <Image key={index} alt='star-icon' className='' src="/images/star-rating.png" width="15" height="15" />
   ))}
         {/* <Image alt='star-icon' className='' src="/images/star-rating.png" width="15" height="15" />
