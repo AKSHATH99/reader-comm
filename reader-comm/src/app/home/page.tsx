@@ -1,7 +1,10 @@
-import React from "react";
+'use client'
+
+import React, { useEffect , useState} from "react";
 import HeaderComponent from "../../components/HeaderComponent";
 import BookInfoBox from "../../components/BookInfoBox";
 import SearchBox from "../../components/SearchBox";
+import axios from "axios";
 
 const HomePage = () => {
   const DemoBookData = [
@@ -67,6 +70,38 @@ const HomePage = () => {
     },
   ];
 
+  const [bookData , setBookData] = useState()
+
+  const fetchAllBooks =  async()=>{
+    try {
+      axios.defaults.withCredentials = true;
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        "http://localhost:3000/api/book/all",
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      
+      // console.log(response);
+      setBookData(response.data)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(()=>{
+    fetchAllBooks()
+  },[])
+  useEffect(()=>{
+    console.log(bookData)
+  },[bookData])
+
+  
+
   return (
     <div>
      
@@ -76,7 +111,7 @@ const HomePage = () => {
         </div>
         Browse from our varities of books and find your flavour
         <div className="flex  flex-wrap flex-row gap-10 gap-y-10 p-5 mt-10">
-          {DemoBookData.map((book) => {
+          {bookData?.map((book:any) => {
             return <BookInfoBox book={book} />;
           })}
         </div>
