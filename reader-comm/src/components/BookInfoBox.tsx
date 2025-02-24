@@ -40,7 +40,7 @@ const BookInfoBox = ({book}:any) => {
         {/* <span className=''>4 / 5</span> */}
       </div>
       <p> . </p>
-      <p className='text-sm text-[#6b6370] '>{book.genre  } </p>
+      <p className='text-sm text-[#6b6370] '>{book.category  } </p>
       </div>
       
       <button className="w-full mt-3 group flex items-center justify-center gap-2 bg-stone-50 hover:bg-stone-300 text-gray-700 py-3 px-4 rounded-lg transition-colors duration-300">
