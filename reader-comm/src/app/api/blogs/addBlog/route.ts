@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
 
 
-    const BlogCoverImage = formData.get("BlogCoverImage") as File;
+    const BlogCoverImage = formData.get("CoverImage") as File;
 
     // Extract other form fields
     const BlogTitle = formData.get("BlogTitle") as string;
@@ -22,7 +22,9 @@ export async function POST(req: NextRequest) {
     const PublishDate = formData.get("PublishDate") as string;
     const BlogContent = formData.get("BlogContent") as string;
     const category = formData.get("category") as string;
-    const userId = formData.get("id") as string;
+    const userId = formData.get("AuthorID") as string;
+
+    console.log(BlogTitle,AuthorName,PublishDate,BlogContent,category,userId);
 
     // Check if user exists
     const query = {

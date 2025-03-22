@@ -20,7 +20,7 @@ export async function GET(
 
         const regex = new RegExp(`^${slug}`, "i");
         const bookDetails = await BookModel.find({ BookName: { $regex: regex } }).select(
-          " BookName AuthorName PublishedDate BookCoverImage totalPages category Rating"
+          " _id BookName AuthorName PublishedDate BookCoverImage totalPages category Rating"
         );
 
         if(bookDetails.length==0 ){
