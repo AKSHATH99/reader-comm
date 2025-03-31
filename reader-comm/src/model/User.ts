@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Mongoose } from "mongoose";
+import mongoose, { Schema, Document, Mongoose, Types } from "mongoose";
 
 export interface BookList extends Document {
     BookID: string,
@@ -30,8 +30,10 @@ export interface User extends Document {
   noOFBookRead?: number;
   noOfContributions?: number;
   streakPoints?: number;
-  ReadBookList?: BookList[];
-  BookWishlist?: BookList[];
+  ReadBookList?: Types.ObjectId[];
+  BookWishlist?: Types.ObjectId[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const UserSchema: Schema<User> = new mongoose.Schema({
@@ -63,14 +65,16 @@ const UserSchema: Schema<User> = new mongoose.Schema({
     streakPoints:{
         type:Number,
     },
-    ReadBookList: {
-        type: [BookListSchema],
-        default: [],
-    },
-    BookWishlist: {
-        type: [BookListSchema],
-        default: [],
-    },
+    ReadBookList: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Book',
+        default: []
+    }],
+    BookWishlist: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Book',
+        default: []
+    }],
 
 
 },{ timestamps: true });
