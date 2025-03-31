@@ -24,6 +24,9 @@ export async function POST(req: NextRequest) {
     const totalPages = formData.get('totalPages') as string;
     const category = formData.get('category') as string;
     const adminPassword = formData.get('adminPassword') as string;
+    const BookDescription = formData.get('BookDescription') as string;
+    const stock = parseInt(formData.get('stock') as string) || 0;
+    const available = formData.get('available') === 'true';
 
     console.log("Book Name:", BookName);
 
@@ -81,6 +84,9 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  console.log("Book Description:", BookDescription);
+  console.log("Stock:", stock);
+  console.log("Available:", available);
     // Create the book entry
     const newBook = new BookModel({
       BookName,
@@ -91,6 +97,14 @@ export async function POST(req: NextRequest) {
       BookPDFLink:bookPdfResult.url,
       totalPages,
       category,
+      BookDescription,
+      stock,
+      available,
+      // Rating: {
+      //   average: 0,
+      //   noOFReviews: 0,
+      //   totalRating: 0
+      // }
     });
 
     const createdBook = await newBook.save();
