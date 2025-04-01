@@ -17,7 +17,7 @@ export async function GET(request: Request,{ params }: { params: { slug: string 
       );
     }
 
-    const booksByCategory = await BookModel.find({category});
+    const booksByCategory = await BookModel.find({category,approved:true});
 
     return NextResponse.json(
      booksByCategory,

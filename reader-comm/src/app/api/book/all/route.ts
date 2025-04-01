@@ -14,7 +14,7 @@ export async function GET(
 
     try {
      
-        const bookDetails = await BookModel.find({}).select(
+        const bookDetails = await BookModel.find({approved:true}).select(
           " BookName AuthorName PublishedDate BookCoverImage totalPages category Rating"
         );
 
