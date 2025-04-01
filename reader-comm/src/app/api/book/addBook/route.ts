@@ -100,6 +100,7 @@ export async function POST(req: NextRequest) {
       BookDescription,
       stock,
       available,
+      approved:false,
       // Rating: {
       //   average: 0,
       //   noOFReviews: 0,
