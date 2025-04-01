@@ -6,8 +6,10 @@ import BookInfoBox from "../../components/BookInfoBox";
 import SearchBox from "../../components/SearchBox";
 import axios from "axios";
 import TopUsersComponent from "../../components/TopUsersComponent";
+import { useRouter } from "next/navigation";
 
 const HomePage = () => {
+  const router = useRouter();
   const DemoBookData = [
     {
       id: 1,
@@ -238,7 +240,7 @@ const HomePage = () => {
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 ml-10 text-gray-400 hover:text-gray-600 cursor-pointer">
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
         </svg>
-        <p className="text-gray-400  ml-1 mt-1">Contribute book details to community </p>
+        <p onClick={() => router.push('/book/addBook')} className="text-gray-400  ml-1 mt-1">Contribute book details to community </p>
           </div> 
       </div>
       {showTopUsers && <TopUsersComponent isOpen={showTopUsers} onClose={() => setShowTopUsers(false)} />}
