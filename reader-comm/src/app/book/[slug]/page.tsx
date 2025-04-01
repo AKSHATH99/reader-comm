@@ -21,6 +21,9 @@ const BookPage = () => {
     AuthorName: string;
     PublishedDate: string;
     category: string;
+    BookDescription: string;
+    totalPages: number;
+    stock: number;
   }
 
   interface BookReview {
@@ -67,6 +70,9 @@ const BookPage = () => {
   const [error, setError] = useState('');
   const [isWishlistLoading, setIsWishlistLoading] = useState(false);
   const [relatedBooks, setRelatedBooks] = useState<Book[]>([]);
+
+
+  
   const FetchBookDetails = async () => {
     try {
       axios.defaults.withCredentials = true;
@@ -81,7 +87,7 @@ const BookPage = () => {
         }
       );
 
-      // console.log(response);
+      console.log( "book details",   response);
       setBook(response.data);
     } catch (error) {
       console.log(error);
@@ -331,6 +337,8 @@ const BookPage = () => {
     );
   }
 
+  
+
   return (
     <>
       <Script
@@ -382,6 +390,12 @@ const BookPage = () => {
                       <FaBook className="mr-2" />
                       <span>{book.category}</span>
                     </div>
+                    <div>
+                      <p>{book.totalPages} pages</p>
+                    </div>
+                    <div>
+                      <span>{book.BookDescription}</span>
+                    </div>
                     <div className="flex items-center">
                       <FaStar className="text-yellow-400 mr-2" />
                       {/* <span className="text-gray-700">
@@ -400,12 +414,20 @@ const BookPage = () => {
                       )}
                       Add to Reading List
                     </button>
-                    <button
+                    {/* <button
                       onClick={handleBuyBook}
                       className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
                     >
                       Buy Book
-                    </button>
+                    </button> */}
+                    {book.stock > 0 ? (
+                      <button
+                        onClick={handleBuyBook}
+                        className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
+                      >
+                        Buy Book
+                      </button>
+                    ):<p className="text-red-500 font-bold" >Out of Stock</p>}
                   </div>
                 </div>
               </div>
