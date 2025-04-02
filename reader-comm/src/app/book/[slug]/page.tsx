@@ -337,7 +337,25 @@ const BookPage = () => {
     );
   }
 
-  
+  const handleReadBook = async () => {
+    try {
+      const response = await fetch('/api/user/addReadList', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          bookId: bookid
+        })
+      });
+      const data = await response.json();
+      console.log(data);
+      alert('Book added to read list successfully!');
+    } catch (error) {
+      console.error('Error reading book:', error);
+    }
+  };
 
   return (
     <>
@@ -402,6 +420,8 @@ const BookPage = () => {
                         {reviewdata?.bookRatings.Rating.average.toFixed(1)} ({reviewdata?.bookRatings.Rating.noOFReviews} reviews)
                       </span> */}
                     </div>
+                    <div className="flex items-center gap-4">
+                      
                     <button 
                       onClick={handleAddToWishlist}
                       disabled={isWishlistLoading}
@@ -414,6 +434,12 @@ const BookPage = () => {
                       )}
                       Add to Reading List
                     </button>
+                    <button 
+                    onClick={()=>{handleReadBook()}}
+                    className="mt-4 bg-[#14b8a6] text-white px-6 py-2 rounded-lg hover:bg-[#54a198] transition-colors flex items-center">
+                        I read this book
+                      </button>
+                    </div>
                     {/* <button
                       onClick={handleBuyBook}
                       className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
