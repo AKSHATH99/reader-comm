@@ -24,7 +24,7 @@ export default function AddBlog() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('userId');
     if (!token) {
       router.push('/auth/signin');
     }

@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation'
 import axios from 'axios'
 import { motion } from 'framer-motion'
 import { FaStar, FaRegStar, FaTrash, FaEdit } from 'react-icons/fa'
+import { formatBlogContent } from '@/helpers/FormatBlog';
 
 interface BlogRating {
   noOfLikes: number;
@@ -164,7 +165,7 @@ const BlogPage = () => {
             alt={blogData.BlogTitle}
             className="w-full h-64 object-cover my-4 rounded-lg"
           />
-          <p className="text-lg text-gray-800 mb-4">{blogData.content}</p>
+          <p className="text-lg text-gray-800 mb-4">{formatBlogContent(blogData.content)}</p>
           <div className="flex justify-between items-center mb-8">
             <span className="text-gray-700 text-sm">Category: {blogData.category}</span>
             <span className="text-gray-700 text-sm">Likes: {blogData.Rating.noOfLikes}</span>

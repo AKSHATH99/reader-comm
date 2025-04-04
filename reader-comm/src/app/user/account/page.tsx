@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { formatDate } from '@/helpers/FormatDate';
 
 interface User {
   id: string;
@@ -19,6 +20,18 @@ interface Book {
   category: string;
 }
 
+interface Order {
+  _id: string;
+  userId: string;
+  books: {
+    bookId: string;
+    title: string;
+    
+  }[];
+  price: number;
+  createdAt: Date;
+}
+
 export default function Home() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
@@ -26,6 +39,7 @@ export default function Home() {
   const [wishlist, setWishlist] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -63,6 +77,7 @@ export default function Home() {
         
         if (readBooksResponse.ok) {
           const readBooksData = await readBooksResponse.json();
+          console.log("readBooks>>>>>",readBooksData);
           setReadBooks(readBooksData.readBooks || []);
         }
 
@@ -80,6 +95,8 @@ export default function Home() {
           setWishlist(wishlistData.wishlist || []);
         }
 
+        // Fetch orders
+        await fetchOrders();
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
@@ -89,6 +106,30 @@ export default function Home() {
 
     fetchUserData();
   }, [router]);
+
+  const fetchOrders = async () => {
+    try {
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        return;
+      }
+      const response = await fetch(`/api/user/getOrders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId })
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch orders');
+      }
+      const data = await response.json();
+      console.log("orders>>>>>",data);
+      setOrders(data.orders || []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    }
+  };
 
   if (loading) {
     return (
@@ -181,6 +222,23 @@ export default function Home() {
               ))}
               {wishlist.length === 0 && (
                 <p className="text-gray-500 col-span-full text-center">No books in wishlist</p>
+              )}
+            </div>
+          </div>
+
+          {/* Orders Section */}
+          <div className="bg-white shadow-lg rounded-lg p-8">
+            <h2 className="text-2xl font-bold mb-6">My Orders  ({orders.length})</h2>
+            <div className="flex  gap-5 flex-wrap">
+              {orders.map((order) => (
+                <div key={order._id} className="p-4 border rounded-lg w-max">
+                  <h3 className="text-lg font-semibold mb-2">Order ID: {order._id}</h3>
+                  <p className="text-gray-600 mb-2">Total Amount: {order.price}</p>
+                  <p className="text-gray-600 mb-2">Order Date : {formatDate(order.createdAt)}</p>
+                </div>
+              ))}
+              {orders.length === 0 && (
+                <p className="text-gray-500 col-span-full text-center">No orders found</p>
               )}
             </div>
           </div>

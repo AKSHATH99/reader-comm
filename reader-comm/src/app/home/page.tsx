@@ -153,20 +153,22 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div>
-      <div className="mt-10 p-3">
+    <div className="bg-gray-100">
+      <div className="pt-28 p-3">
         <div className="ml-10 flex gap-64">
           <SearchBox />
 
-          <div onClick={() => setShowTopUsers(!showTopUsers)} className="  border flex gap-3  items-center justify-center rounded-md py-1 px-5 hover:cursor-pointer bg-gray-100">
+          <div onClick={() => setShowTopUsers(!showTopUsers)} className="  border-2 border-themeColor  flex gap-3  items-center justify-center rounded-md py-1 px-5 hover:cursor-pointer bg-[#c1f9f3]">
            <img width="15" height="15" src="/images/star-rating.png"/>
             View Top Readers
           </div>
         </div>
-        <div className="flex items-center gap-10 mt-5 ml-12">
+
+
+        <div className="flex items-center gap-5 mt-5 ml-12">
           <div 
             className={`border rounded-md py-1 px-5 text-sm hover:cursor-pointer ${
-              selectedCategory === "all" ? "bg-blue-600 text-white" : "hover:bg-gray-100"
+              selectedCategory === "all" ? "bg-themeColor text-white" : "hover:bg-gray-100"
             }`}
             onClick={() => handleCategoryClick("all")}
           >
@@ -176,7 +178,7 @@ const HomePage = () => {
             <div 
               key={index} 
               className={`border rounded-md py-1 px-5 text-sm hover:cursor-pointer ${
-                selectedCategory === category ? "bg-blue-600 text-white" : "hover:bg-gray-100"
+                selectedCategory === category ? "bg-themeColor text-white" : "hover:bg-gray-100"
               }`}
               onClick={() => handleCategoryClick(category)}
             >
@@ -211,12 +213,12 @@ const HomePage = () => {
         </div>
 
         <div className="mt-10">
-          <p className="ml-10 text-gray-400">
+          <p className="ml-12 text-gray-400">
             Browse from our varieties of books and find your flavor
           </p> 
         </div>
 
-        <div className="flex flex-wrap flex-row gap-10 gap-y-10 p-5 mt-10">
+        <div className="flex flex-wrap flex-row gap-10 gap-y-10 p-5 mt-10 ml-10">
           {isLoading ? (
             <div className="w-full text-center text-gray-500">
               Loading books...

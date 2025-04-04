@@ -190,6 +190,30 @@ export default function Home() {
         </div>
 
         <div className="mt-28 ml-10">
+          <h1 className="text-3xl font-bold text-[#14b8a6] mb-8">
+            Our Aim
+          </h1>
+          <div className="flex gap-10">
+            <div>
+          <p className="text-gray-400 max-w-xl mt-4">
+            Hey there! We're all about creating a cozy corner where book lovers can hang out, 
+            share their favorite reads, and connect with fellow bookworms. Think of us as your 
+            bookish buddy who's always ready to chat about stories! <br/><br/>
+            We're on a mission to make reading cool again by building a fun, friendly community 
+            where everyone feels welcome to share their book adventures. <br/>
+            Whether you're a reader looking for your next favorite book or a writer with stories 
+            to share, we've got your back! Let's make reading awesome together! 
+          </p>
+          <p className="text-gray-700 max-w-xl mt-4">If you think our mission is cool and want to be part of this , come join us ! </p>
+          <button className="bg-[#14b8a6] text-white mt-10 p-8 py-4 rounded-lg w-1/2">
+            Join Us
+          </button>
+          </div>
+          <img src="/images/aim.svg" alt="Books collection" className="w-1/2 h-1/2 -mt-32 " />
+          </div>
+        </div>
+
+        <div className="mt-28 ml-10">
           <h1 className="text-4xl font-bold text-[#b3bab9]">
             Books , Blogs , Community & More . . .
           </h1>
@@ -357,7 +381,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mt-28 ml-10">
+        {/* <div className="mt-28 ml-10">
           <h1 className="text-3xl font-bold text-[#14b8a6] mb-8">
             Our Aim
           </h1>
@@ -379,7 +403,7 @@ export default function Home() {
           </div>
           <img src="/images/aim.svg" alt="Books collection" className="w-1/2 h-1/2 -mt-32 " />
           </div>
-        </div>
+        </div> */}
 
       </div>
     </div>

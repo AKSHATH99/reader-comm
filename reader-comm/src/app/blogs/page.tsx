@@ -39,7 +39,7 @@ const Blogs = () => {
           },
         }
       );
-
+      console.log(response.data);
       setBlogData(response.data);
     } catch (error) {
       console.error(error);
@@ -55,10 +55,10 @@ const Blogs = () => {
 
   return (
     <div className=" p-10 ">
-      <div className="flex justify-between items-center">
-      <h1 className="text-4xl">BLOGS</h1>                     
+      <div className="flex  items-center">
+      <h1 className="text-4xl font-bold text-themeColor">BLOGS</h1>                     
       <a href="/blogs/addblog">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-md flex items-center gap-2">
+        <button className="bg-themeColor relative left-[700px] text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-themeHover transition-colors duration-300">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
           </svg>
@@ -67,10 +67,18 @@ const Blogs = () => {
       </a>  
 
       </div>
-      <p className="mt-3 text-gray-500">
+      <p className="mt-8 text-sm text-gray-400">
         Browse through blogs and read experiences of other users and find your
         next taste
       </p>
+      <div className="flex flex-wrap gap-10 my-8 ml-10">
+        <button className=" border border-gray-400 w-1/6 px-4 py-2 rounded-md flex items-center justify-center gap-2 hover:bg-themeHover transition-colors duration-300">
+          All Blogs 
+        </button>
+        <button className=" border border-gray-400 w-1/6 px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-themeHover transition-colors duration-300">
+          My blogs 
+        </button>
+      </div>
       {blogData ? (
         <div className="p-10 flex flex-wrap gap-10">
           {blogData.map((blog) => (

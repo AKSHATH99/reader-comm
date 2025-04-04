@@ -179,7 +179,7 @@ const BookPage = () => {
       if (!response.ok) {
         throw new Error(data.error || 'Failed to create order');
       }
-
+      console.log("process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID",process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID);
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: data.amount,
@@ -357,6 +357,48 @@ const BookPage = () => {
     }
   };
 
+  const handleAddToCart = async () => {
+    try {
+      setIsLoading(true);
+      setError('');
+      
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        router.push('/auth/signin');
+        return;
+      }
+
+      const response = await fetch('/api/user/addToCart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          bookId: bookid,
+          count: 1,
+          bookName: book?.BookName,
+          bookImage: book?.BookCoverImage
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to add to cart');
+      }
+
+      // Show success message or update UI
+      alert('Book added to cart successfully!');
+      
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to add to cart');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
   return (
     <>
       <Script
@@ -448,10 +490,10 @@ const BookPage = () => {
                     </button> */}
                     {book.stock > 0 ? (
                       <button
-                        onClick={handleBuyBook}
+                        onClick={handleAddToCart}
                         className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
                       >
-                        Buy Book
+                        Add To Cart
                       </button>
                     ):<p className="text-red-500 font-bold" >Out of Stock</p>}
                   </div>
@@ -571,8 +613,8 @@ const BookPage = () => {
               )}
             </motion.div>
             
-            <div className="mt-4">
-                You might also like
+            <div className="my-4">
+               <p className="text-xl font-bold my-10 text-gray-600">You might also like</p>
                 <div className="flex flex-wrap gap-4">
                 {relatedBooks
                   .filter(relatedBook => relatedBook.BookName !== book?.BookName)
