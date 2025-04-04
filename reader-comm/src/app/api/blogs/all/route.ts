@@ -14,14 +14,14 @@ export async function GET(
 
     try {
      
-        const bookDetails = await BlogModel.find({});
+        const blogDetails = await BlogModel.find({}).sort({ PublishedDate: -1 });
 
-        if(bookDetails.length==0 ){
-        return NextResponse.json("Books not found", { status: 200 });
+        if(blogDetails.length==0 ){
+        return NextResponse.json("Blogs not found", { status: 200 });
 
         }
           
-        return NextResponse.json(bookDetails, { status: 200 });
+        return NextResponse.json(blogDetails, { status: 200 });
         
 
     

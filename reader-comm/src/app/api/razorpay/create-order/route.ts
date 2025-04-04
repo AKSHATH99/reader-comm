@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
       currency,
       receipt: `receipt_order_${Date.now()}`,
     };
-
+    console.log("options",options);
     const order = await razorpay.orders.create(options);
 
     return Response.json({
