@@ -64,48 +64,114 @@ const BookInfoBox = ({ book }: BookInfoBoxProps) => {
     }
   };
 
-  return (
-    <div className="w-72 p-5 pb-2 hover:cursor-pointer rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border- bg-[hsl(48,29%,97%)]">
-      <div onClick={()=>{router.push(`/book/${book._id}`)}}>
-      <div className="overflow-hidden rounded-lg mb-4">
-        <img
-          src={book.BookCoverImage}
-          alt="Book Cover"
-          className="h-64 w-full object-cover hover:scale-105 transition-transform duration-300"
-        />
-      </div>
+  const handleAddToCart = async () => {
+    try {
+      setIsLoading(true);
+      setError('');
       
-      <h2 className="font-serif text-lg font-medium text-gray-800 mb-4 line-clamp-2">
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        router.push('/auth/signin');
+        return;
+      }
+
+      const response = await fetch('/api/user/addToCart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          bookId: book._id,
+          count: 1,
+          bookName: book.BookName,
+          bookImage: book.BookCoverImage
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to add to cart');
+      }
+
+      // Show success message or update UI
+      alert('Book added to cart successfully!');
+      
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to add to cart');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="w-72 bg-[hsl(48,29%,97%)] rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100">
+  <div 
+    className="cursor-pointer" 
+    onClick={() => {router.push(`/book/${book._id}`)}}
+  >
+    {/* Cover Image */}
+    <div className="h-64 overflow-hidden">
+      <img
+        src={book.BookCoverImage}
+        alt="Book Cover"
+        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+      />
+    </div>
+    
+    {/* Book Info Section */}
+    <div className="p-4">
+      {/* Title */}
+      <h2 className="font-serif text-lg font-medium text-gray-800 mb-2 line-clamp-2">
         {book.BookName}
       </h2>
-
-      <div className='flex gap-5 items-center -mt-4'>
-      <h2 className='text-gray-600 text-sm ' > {book.AuthorName}</h2> 
-      <span className='text-xs text-[#6b6370] mt-1 ' >{book.PublishedDate}</span>
+      
+      {/* Author & Date */}
+      <div className="flex items-center justify-between text-gray-600 mb-3">
+        <span className="text-sm">{book.AuthorName}</span>
+        <span className="text-xs text-[#6b6370]">{book.PublishedDate}</span>
       </div>
-
-      <div className='flex gap-5 items-center '>
-      <div className='flex gap-2 my-5'>
-      {Array.from({ length: Math.round(book.Rating.average) }, (_, index) => (  
-        <Image key={index} alt='star-icon' className='' src="/images/star-rating.png" width="15" height="15" />
-      ))}
-        {/* <Image alt='star-icon' className='' src="/images/star-rating.png" width="15" height="15" />
-        <Image alt='star-icon' className='' src="/images/star-rating.png" width="15" height="15" />
-        <Image alt='star-icon' className='' src="/images/star-rating.png" width="15" height="15" /> */}
-        {/* <span className=''>4 / 5</span> */}
+      
+      {/* Rating & Category */}
+      <div className="flex items-center space-x-2 mb-2">
+        <div className="flex">
+          {Array.from({ length: Math.round(book.Rating.average) }, (_, index) => (
+            <Image 
+              key={index} 
+              alt="star-icon" 
+              src="/images/star-rating.png" 
+              width="15" 
+              height="15" 
+            />
+          ))}
+        </div>
+        <span className="text-xs text-gray-500">•</span>
+        <p className="text-xs text-[#6b6370]">{book.category}</p>
       </div>
-      <p> . </p>
-      <p className='text-sm text-[#6b6370] '>{book.category  } </p>
-      </div>
-      </div>
-      <button onClick={()=>{handleAddToWishlist()}} className="w-full mt-3 group flex items-center justify-center gap-2 bg-stone-50 hover:bg-stone-300 text-gray-700 py-3 px-4 rounded-lg transition-colors duration-300">
-        <span className="font-medium">Add to Reading List</span>
-      </button>
-
-      {error && (
-        <p className="mt-2 text-sm text-red-500 text-center">{error}</p>
-      )}
     </div>
+  </div>
+  
+  {/* Button Section */}
+  <div className="px-4 pb-4">
+    <button 
+      onClick={() => {handleAddToCart()}} 
+      className="w-full bg-themeColor text-white py-3 rounded-lg font-medium hover:opacity-90 transition-opacity duration-300 flex items-center justify-center gap-2"
+    >
+      <span>Add to Reading List</span>
+    </button>
+    <button 
+      onClick={()=>{handleAddToCart()}} 
+      className="w-full mt-2 bg-gray-400 text-white py-3 rounded-lg font-medium hover:opacity-90 transition-opacity duration-300 flex items-center justify-center gap-2"
+    >
+      <span>Add to Cart</span>
+    </button>
+    
+    {error && (
+      <p className="mt-2 text-xs text-red-500 text-center">{error}</p>
+    )}
+  </div>
+</div>
   );
 };
 

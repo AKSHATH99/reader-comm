@@ -53,11 +53,11 @@ const SearchBox = () => {
           value={searchQuery}
           onChange={handleInputChange}
           onKeyPress={handleKeyPress}
-          className='border rounded-l-xl w-3/4 h-10 p-3 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent' 
+          className='border rounded-l-xl w-3/4 h-10 p-3 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#14b8a6] focus:border-transparent' 
         />
         <button 
           onClick={handleSearch}
-          className='border rounded-r-xl h-10 px-6 bg-blue-600 text-white hover:bg-blue-700 transition-colors'
+          className='border rounded-r-xl h-10 px-6 bg-themeColor text-white hover:bg-themeHover transition-colors'
         >
           Search
         </button>

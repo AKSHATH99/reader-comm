@@ -15,9 +15,44 @@ export interface BookList extends Document {
         type:String,
         required:true ,     
     },
+    
     createdAt:{
         type:Date,
         required : true
+    }
+
+
+}) 
+
+export interface Cart extends Document {
+    _id: mongoose.Types.ObjectId;
+    BookID: string,
+    BookName: string;
+    createdAt: Date;
+    count: number;
+    BookImage: string;
+  }
+
+  const CartSchema: Schema<Cart> = new mongoose.Schema({
+    BookID:{
+        type:String,
+        required:true,
+    },
+    BookName:{
+        type:String,
+        required:true ,     
+    },
+    createdAt:{
+        type:Date,
+        required : true
+    },
+    count:{
+        type:Number,
+        required:true
+    },
+    BookImage:{
+        type:String,
+        required:true
     }
 
 
@@ -32,6 +67,7 @@ export interface User extends Document {
   streakPoints?: number;
   ReadBookList?: Types.ObjectId[];
   BookWishlist?: Types.ObjectId[];
+  Cart?: Cart[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -73,6 +109,10 @@ const UserSchema: Schema<User> = new mongoose.Schema({
     BookWishlist: [{
         type: Schema.Types.ObjectId,
         ref: 'Book',
+        default: []
+    }],
+    Cart: [{
+        type: CartSchema,
         default: []
     }],
 
