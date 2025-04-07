@@ -27,6 +27,7 @@ export async function POST(req: NextRequest) {
     const BookDescription = formData.get('BookDescription') as string;
     const stock = parseInt(formData.get('stock') as string) || 0;
     const available = formData.get('available') === 'true';
+    const price = parseFloat(formData.get('price') as string) || 0;
 
     console.log("Book Name:", BookName);
 
@@ -101,6 +102,7 @@ export async function POST(req: NextRequest) {
       stock,
       available,
       approved:false,
+      price,
       // Rating: {
       //   average: 0,
       //   noOFReviews: 0,

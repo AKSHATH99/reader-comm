@@ -7,9 +7,9 @@ export async function POST(request: Request) {
   await dbConnect();
 
   try {
-    const { bookId, bookName, count, bookImage, userId } = await request.json();
-    console.log(bookId, bookName, count, bookImage, userId);
-    if (!userId || !bookId || !bookName || !count || !bookImage) {
+    const { bookId, bookName, count, bookImage, userId, price } = await request.json();
+    console.log(bookId, bookName, count, bookImage, userId, price);
+    if (!userId || !bookId || !bookName || !count || !bookImage || !price) {
       return NextResponse.json(
         { message: "Missing required fields" },
         { status: 400 }
@@ -33,8 +33,16 @@ export async function POST(request: Request) {
     } else {
       // If the book doesn't exist, add it to the cart
       const cartItem = new mongoose.Types.ObjectId();
+
+      // Ensure existing cart items have price field (default to 0 if missing)
+    const existingCart = user.Cart || [];
+    const updatedExistingCart = existingCart.map(item => ({
+      ...item,
+      price: item.price || 0
+    }));
+
       user.Cart = [
-        ...(user.Cart || []),
+        ...updatedExistingCart,
         {
           _id: cartItem,
           BookID: bookId,
@@ -42,8 +50,11 @@ export async function POST(request: Request) {
           createdAt: new Date(),
           count: Number(count),
           BookImage: bookImage,
+          price: Number(price),
         } as any,
       ];
+      console.log("Cart item added:", user.Cart);
+
 
       await user.save();
 

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-
+import { formatDate } from '@/helpers/FormatDate';
 interface Book {
   _id: string;
   BookName: string;
@@ -15,6 +15,8 @@ interface Book {
     noOFReviews: number;
   };
   PublishedDate: string;
+  price: number;
+  stock: number;
 }
 
 interface BookInfoBoxProps {
@@ -85,7 +87,8 @@ const BookInfoBox = ({ book }: BookInfoBoxProps) => {
           bookId: book._id,
           count: 1,
           bookName: book.BookName,
-          bookImage: book.BookCoverImage
+          bookImage: book.BookCoverImage,
+          price: book.price
         })
       });
 
@@ -130,7 +133,7 @@ const BookInfoBox = ({ book }: BookInfoBoxProps) => {
       {/* Author & Date */}
       <div className="flex items-center justify-between text-gray-600 mb-3">
         <span className="text-sm">{book.AuthorName}</span>
-        <span className="text-xs text-[#6b6370]">{book.PublishedDate}</span>
+        <span className="text-xs text-[#6b6370]">{formatDate(book.PublishedDate)}</span>
       </div>
       
       {/* Rating & Category */}
@@ -155,17 +158,17 @@ const BookInfoBox = ({ book }: BookInfoBoxProps) => {
   {/* Button Section */}
   <div className="px-4 pb-4">
     <button 
-      onClick={() => {handleAddToCart()}} 
+      onClick={() => {handleAddToWishlist()}} 
       className="w-full bg-themeColor text-white py-3 rounded-lg font-medium hover:opacity-90 transition-opacity duration-300 flex items-center justify-center gap-2"
     >
       <span>Add to Reading List</span>
     </button>
-    <button 
+   {book?.stock>0 ? <button 
       onClick={()=>{handleAddToCart()}} 
       className="w-full mt-2 bg-gray-400 text-white py-3 rounded-lg font-medium hover:opacity-90 transition-opacity duration-300 flex items-center justify-center gap-2"
     >
-      <span>Add to Cart</span>
-    </button>
+      <span>Add to Cart {book?.price && <span className="ml-2"> &#8377;{book?.price}</span>}</span>
+    </button>:<p className="mt-5 text-xs text-gray-500 text-center">Currently Out of Stock</p>}
     
     {error && (
       <p className="mt-2 text-xs text-red-500 text-center">{error}</p>

@@ -16,6 +16,7 @@ export interface Books extends Document {
   stock: number;
   available: boolean;
   approved: boolean;
+  price: number;
 }
 
 const BooksSchema: Schema<Books> = new mongoose.Schema({
@@ -57,7 +58,10 @@ const BooksSchema: Schema<Books> = new mongoose.Schema({
     type: String,
     required: true,
   },
-
+  price: {
+    type: Number,
+    required: true,
+  },
   Rating: {
     average: {
       type: Number,

@@ -24,6 +24,7 @@ const BookPage = () => {
     BookDescription: string;
     totalPages: number;
     stock: number;
+    price: number;
   }
 
   interface BookReview {
@@ -489,12 +490,16 @@ const BookPage = () => {
                       Buy Book
                     </button> */}
                     {book.stock > 0 ? (
-                      <button
-                        onClick={handleAddToCart}
+                      <div className=" ">
+                        <p className="text-xl mt-10">{book?.price && <span className="ml-2"> &#8377;{book?.price}</span>}</p>
+
+                        <button
+                          onClick={handleAddToCart}
                         className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
-                      >
-                        Add To Cart
-                      </button>
+                        >
+                          Add To Cart
+                        </button>
+                      </div>
                     ):<p className="text-red-500 font-bold" >Out of Stock</p>}
                   </div>
                 </div>

@@ -31,6 +31,7 @@ export interface Cart extends Document {
     createdAt: Date;
     count: number;
     BookImage: string;
+    price: number;
   }
 
   const CartSchema: Schema<Cart> = new mongoose.Schema({
@@ -52,6 +53,10 @@ export interface Cart extends Document {
     },
     BookImage:{
         type:String,
+        required:true
+    },
+    price:{
+        type:Number,
         required:true
     }
 
