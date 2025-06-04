@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     const category = formData.get("category") as string;
     const userId = formData.get("AuthorID") as string;
 
-    console.log(BlogTitle,AuthorName,PublishDate,BlogContent,category,userId);
+    // console.log(BlogTitle,AuthorName,PublishDate,BlogContent,category,userId);
 
     // Check if user exists
     const query = {
@@ -35,8 +35,8 @@ export async function POST(req: NextRequest) {
         return Object.values(condition).every((value) => value !== null);
       }),
     };
-
-    const VerifyUser = await UserModel.findOne(query);
+    console.log(userId)
+    const VerifyUser = await UserModel.findById(userId);
 
     if (!VerifyUser) {
       return NextResponse.json(
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
       BlogCoverImage.name
     );
 
-    console.log("Blog Cover Image URL:", blogCoverUploaded.url);
+    // console.log("Blog Cover Image URL:", blogCoverUploaded.url);
 
     if (!blogCoverUploaded.url) {
       return NextResponse.json(

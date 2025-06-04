@@ -71,14 +71,14 @@ const Blogs = () => {
         Browse through blogs and read experiences of other users and find your
         next taste
       </p>
-      <div className="flex flex-wrap gap-10 my-8 ml-10">
+      {/* <div className="flex flex-wrap gap-10 my-8 ml-10">
         <button className=" border border-gray-400 w-1/6 px-4 py-2 rounded-md flex items-center justify-center gap-2 hover:bg-themeHover transition-colors duration-300">
           All Blogs 
         </button>
         <button className=" border border-gray-400 w-1/6 px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-themeHover transition-colors duration-300">
           My blogs 
         </button>
-      </div>
+      </div> */}
       {blogData ? (
         <div className="p-10 flex flex-wrap gap-10">
           {blogData.map((blog) => (

@@ -112,7 +112,7 @@ const testimonialsData = [
     quote: "As a book blogger, this platform has given me the perfect space to share my thoughts.",
     rating: 5
   }
-];
+];  
 
 export default function Home() {
   const router = useRouter();
@@ -129,6 +129,15 @@ export default function Home() {
   const handleClick = () => {
     if (checkLogin()) {
       router.push("/dashboard");
+    } else {
+      router.push("/login");
+    }
+  }
+
+  const handleClickBook = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (checkLogin()) {
+      router.push("/home");
     } else {
       router.push("/login");
     }
@@ -154,7 +163,7 @@ export default function Home() {
               </span>
             </p>
             <div className="flex gap-4 mt-2 -ml-10 items-center justify-center">
-              <button onClick={()=>{router.push("/signup")}} className="bg-[#14b8a6] text-white px-4 py-2 rounded-md mt-10">
+              <button onClick={()=>{router.push("auth/signup")}} className="bg-[#14b8a6] text-white px-4 py-2 rounded-md mt-10">
                 Become a Member
               </button>
 
@@ -205,7 +214,7 @@ export default function Home() {
             to share, we've got your back! Let's make reading awesome together! 
           </p>
           <p className="text-gray-700 max-w-xl mt-4">If you think our mission is cool and want to be part of this , come join us ! </p>
-          <button className="bg-[#14b8a6] text-white mt-10 p-8 py-4 rounded-lg w-1/2">
+          <button onClick={()=>router.push("/auth/signup")} className="bg-[#14b8a6] text-white mt-10 p-8 py-4 rounded-lg w-1/2">
             Join Us
           </button>
           </div>
@@ -262,6 +271,7 @@ export default function Home() {
                         className="w-full py-2 text-sm text-gray-500 font-bold hover:text-[#14b8a6] transition-colors"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
+                        onClick={(e)=>handleClickBook(e)}
                       >
                         {book.buttonText}
                       </motion.button>

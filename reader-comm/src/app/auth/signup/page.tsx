@@ -43,7 +43,7 @@ export default function SignUp() {
       }
 
       // Redirect to home page on successful signup
-      router.push('/home');
+      router.push('/auth/signin');
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');

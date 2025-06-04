@@ -9,6 +9,22 @@
 //   }
 // }
 
+import { writeFile } from 'fs/promises';
+import { join } from 'path';
+
+// Helper function to handle file upload
+async function saveFile(file: File) {
+  const bytes = await file.arrayBuffer();
+  const buffer = Buffer.from(bytes);
+
+  // Create unique filename
+  const filename = `${Date.now()}-${file.name}`;
+  const path = join(process.cwd(), 'public/uploads', filename);
+
+  // Save file
+  await writeFile(path, buffer);
+  return `/uploads/${filename}`;
+}
 
 import dbConnect from "@/lib/dbConnect";
 import BookModel from "@/model/Books";

@@ -24,6 +24,7 @@ export async function POST(request: Request) {
     }
 
     // Check if user exists
+    console.log(username)
     const user = await UserModel.findOne({ username });
 
     if (!user) {

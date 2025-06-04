@@ -64,7 +64,7 @@ const BlogBox: React.FC<BlogboxProps> = ({ blog }) => {
     <div className='p-4 pt-0  '>
       {/* Title */}
       <motion.h1 
-        className='text-lg font-serif font-bold text-themeColor line-clamp-2 mb-2'
+        className='text-lg font-serif font-bold text-black line-clamp-2 mb-2'
         initial={{ opacity: 0.8 }}
         whileHover={{ opacity: 1 }}
       >
